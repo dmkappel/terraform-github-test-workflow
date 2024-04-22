@@ -14,6 +14,9 @@ permissions:
       
 jobs:
   terraform-format-and-validate:
+    env:
+      GH_TOKEN: ${{ github.token }}
+
     runs-on: ubuntu-latest
 
     steps:
