@@ -36,7 +36,7 @@ jobs:
         run: terraform fmt -check
 
       - name: Pull request comment for format check
-        if: steps.terraform-format.outcome == 'failure'
+        if: ${{ steps.terraform-format.outcome }} == 'failure'
         run: |
             gh api --method POST \
                 -H "Accept: application/vnd.github+json" \
@@ -50,10 +50,11 @@ jobs:
         run: terraform validate
 
       - name: Pull request comment for validate check
-        if: steps.terraform-validate.outcome == 'failure'
+        if: ${{ steps.terraform-validate.outcome }} == 'failure'
         run: |
             gh api --method POST \
                 -H "Accept: application/vnd.github+json" \
                 -H "X-GitHub-Api-Version: 2022-11-28" \
                 /repos/$GITHUB_REPOSITORY/issues/${{ github.event.number }}/comments \
                 -f "body=Terraform vaildate check failed. Please review the errors in the failed check, make corrections, and push the changes to the PR. For more information, refer to the [Terraform validate documentation](https://www.terraform.io/docs/commands/validate.html)"
+
