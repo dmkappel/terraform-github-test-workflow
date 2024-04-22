@@ -58,3 +58,8 @@ jobs:
                 /repos/$GITHUB_REPOSITORY/issues/${{ github.event.number }}/comments \
                 -f "body=Terraform vaildate check failed. Please review the errors in the failed check, make corrections, and push the changes to the PR. For more information, refer to the [Terraform validate documentation](https://www.terraform.io/docs/commands/validate.html)"
 
+
+       - name: echo step context
+         run: |
+           echo ${{ steps.terraform-validate.outcome }}
+           echo ${{ steps.terraform-format.outcome }}
