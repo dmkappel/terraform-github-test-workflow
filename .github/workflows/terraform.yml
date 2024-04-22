@@ -10,7 +10,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
-  issue: write
+  issues: write
       
 jobs:
   terraform-format-and-validate:
