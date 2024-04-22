@@ -20,6 +20,9 @@ jobs:
       with:
         terraform_version: ${{ env.TERRAFORM_VERSION }}
 
+    - name: Echo Hello World
+      run: echo "Hello World!"
+      
     - name: Terraform Format
       run: terraform init
 
