@@ -56,4 +56,4 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/$GITHUB_REPOSITORY/issues/${{ github.event.number }}/comments \
-            -f "body=Terraform validate check failed.<br>Please review the errors in the failed check, make corrections, and push the changes to the PR.<br>For more information, refer to the [Terraform validate documentation](https://www.terraform.io/docs/commands/validate.html)<br>${{ steps.terraform-validate.outputs }}"
+            -f "body=Terraform validate check failed.<br>Please review the errors in the failed check, make corrections, and push the changes to the PR.<br>For more information, refer to the [Terraform validate documentation](https://www.terraform.io/docs/commands/validate.html)"
