@@ -36,7 +36,7 @@ jobs:
         run: terraform fmt -check
 
       - name: Pull request comment for format check
-        if: steps.terraform-format.output != 'success'
+        if: steps.terraform-format.conclusion == 'failure'
         run: |
             gh api --method POST \
                 -H "Accept: application/vnd.github+json" \
@@ -46,11 +46,11 @@ jobs:
 
       - name: Terraform Validate
         id: terraform-validate
-        if: steps.terraform-format.output != 'success' || steps.terraform-format.outcome == 'failure'
+        if: always()
         run: terraform validate
 
       - name: Pull request comment for validate check
-        if: steps.terraform-validate.outcome != 'success'
+        if: steps.terraform-validate.conclusion == 'failure'
         run: |
             gh api --method POST \
                 -H "Accept: application/vnd.github+json" \
