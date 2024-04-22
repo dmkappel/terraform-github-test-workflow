@@ -1,8 +1,6 @@
 name: Terraform Format and Validate
 
 on: 
-  workflow_dispatch:
-
   pull_request:
     branches:
     - main
