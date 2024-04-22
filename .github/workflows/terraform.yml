@@ -32,10 +32,11 @@ jobs:
         run: terraform init
 
       - name: Terraform Format
+        id: terraform-format
         run: terraform fmt -check
 
       - name: Pull request comment for format check
-        if: failure()
+        if: steps.terraform-format.output != 'success'
         run: |
             gh api --method POST \
                 -H "Accept: application/vnd.github+json" \
@@ -44,11 +45,12 @@ jobs:
                 -f "body=Terraform format check failed. Please run `terraform fmt` and push the changes to the PR. For more information, refer to the [Terraform format documentation](https://www.terraform.io/docs/commands/fmt.html)"
 
       - name: Terraform Validate
-        if: always()
+        id: terraform-validate
+        if: steps.terraform-format.output != 'success' || steps.terraform-format.outcome == 'failure'
         run: terraform validate
 
       - name: Pull request comment for validate check
-        if: failure()
+        if: steps.terraform-validate.outcome != 'success'
         run: |
             gh api --method POST \
                 -H "Accept: application/vnd.github+json" \
