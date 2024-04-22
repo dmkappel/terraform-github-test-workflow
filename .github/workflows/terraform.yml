@@ -7,27 +7,37 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pull-requests: write
+  issue: write
+      
 jobs:
   terraform-format-and-validate:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
 
-    - name: Echo Hello World
-      run: echo "Hello World!"
-      
-    - name: Terraform Format
-      run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-    - name: Terraform Format
-      run: terraform fmt -check
+      - name: Pull request comment
+        run: |
+            gh api --method POST \
+                -H "Accept: application/vnd.github+json" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                /repos/$GITHUB_REPOSITORY/issues/${{ github.event.number }}/comments \
+                -f "body=New PR has been created."
 
-    - name: Terraform Validate
-      run: terraform validate
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
