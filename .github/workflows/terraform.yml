@@ -42,7 +42,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/$GITHUB_REPOSITORY/issues/${{ github.event.number }}/comments \
-            -f "body=Terraform format check failed. Please run `terraform fmt` and push the changes to the PR. For more information, refer to the [Terraform format documentation](https://www.terraform.io/docs/commands/fmt.html)"
+            -f "body=Terraform format check failed. \nPlease run 'terraform fmt' and push the changes to the PR. For more information, refer to the [Terraform format documentation](https://www.terraform.io/docs/commands/fmt.html)"
 
     - name: Terraform Validate
       id: terraform-validate
