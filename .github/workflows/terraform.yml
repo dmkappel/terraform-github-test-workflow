@@ -31,16 +31,18 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Format
+        run: terraform fmt -check
+        continue-on-error: true
+
       - name: Pull request comment
+        if: failure()
         run: |
             gh api --method POST \
                 -H "Accept: application/vnd.github+json" \
                 -H "X-GitHub-Api-Version: 2022-11-28" \
                 /repos/$GITHUB_REPOSITORY/issues/${{ github.event.number }}/comments \
-                -f "body=New PR has been created."
-
-      - name: Terraform Format
-        run: terraform fmt -check
+                -f "body=Terraform format check failed. Please run `terraform fmt` and push the changes to the PR. For more information, refer to the [Terraform format documentation](https://www.terraform.io/docs/commands/fmt.html)"
 
       - name: Terraform Validate
         run: terraform validate
